@@ -4,7 +4,7 @@ plugins {
 
 android {
     namespace = "com.example.mobilemarketapp"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.example.mobilemarketapp"
@@ -33,6 +33,7 @@ android {
 
 dependencies {
 
+    implementation(libs.recyclerview)
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
@@ -40,4 +41,5 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+
 }
