@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Allows scrolling -->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
+
+        <!-- Full item details -->
+
+        <!-- Item Name -->
+        <TextView
+            android:id="@+id/detailName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Item Name"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <!-- Item Price -->
+        <TextView
+            android:id="@+id/detailPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="R 100"
+            app:layout_constraintTop_toBottomOf="@id/detailName"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="8dp"/>
+
+        <!-- Item Seller -->
+        <TextView
+            android:id="@+id/detailSeller"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Seller: Karabo"
+            app:layout_constraintTop_toBottomOf="@id/detailPrice"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="8dp"/>
+
+        <!-- Item description -->
+        <TextView
+            android:id="@+id/detailDescription"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Description goes here..."
+            app:layout_constraintTop_toBottomOf="@id/detailSeller"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="12dp"/>
+
+        <!-- Item Rating-->
+        <TextView
+            android:id="@+id/detailRating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rating: 4.5"
+            app:layout_constraintTop_toBottomOf="@id/detailDescription"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="12dp"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>
