@@ -4,39 +4,67 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="4dp">
+    android:layout_margin="10dp"
+    app:cardCornerRadius="14dp"
+    app:cardElevation="6dp">
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:padding="12dp">
 
-    <!-- This represents one product-->
+        <!-- Product Image -->
+        <ImageView
+            android:id="@+id/itemImage"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_launcher_background"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
         <!-- Item Name -->
         <TextView
             android:id="@+id/itemName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Item Name"
+            android:text="Gaming Laptop"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:layout_marginStart="12dp"
+            app:layout_constraintTop_toTopOf="@id/itemImage"
+            app:layout_constraintStart_toEndOf="@id/itemImage"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
-        <!-- Item Price -->
+        <!-- Category -->
+        <TextView
+            android:id="@+id/itemCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Electronics"
+            android:textSize="14sp"
+            android:textColor="#666666"
+            android:layout_marginTop="6dp"
+            android:layout_marginStart="12dp"
+            app:layout_constraintTop_toBottomOf="@id/itemName"
+            app:layout_constraintStart_toEndOf="@id/itemImage"/>
+
+        <!-- Price -->
         <TextView
             android:id="@+id/itemPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="R 100"
-            android:textSize="16sp"
-            app:layout_constraintTop_toBottomOf="@id/itemName"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginTop="4dp"/>
+            android:text="R 12 000"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="#009688"
+            android:layout_marginStart="12dp"
+            android:layout_marginBottom="4dp"
+            app:layout_constraintBottom_toBottomOf="@id/itemImage"
+            app:layout_constraintStart_toEndOf="@id/itemImage"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>

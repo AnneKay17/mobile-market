@@ -1,10 +1,12 @@
 package com.example.mobilemarketapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.SearchView;
+import androidx.appcompat.widget.SearchView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,6 +15,9 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
     ItemAdapter adapter;
     List<Item> itemList;
     SearchView search_bar;
+    //FloatingActionButton postItemBtn;
+    BottomNavigationView bottomNav;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,16 +42,16 @@ public class MainActivity extends AppCompatActivity {
 
         // Find search bar from xml
         search_bar = findViewById(R.id.searchBar);
+        //postItemBtn = findViewById(R.id.postItemBtn);
+
+        //bottom navbar
+        bottomNav = findViewById(R.id.bottomNav);
 
         // tell RecyclerView to display items vertically
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // create empty list to store items
-        itemList = new ArrayList<>();
-
-        //Temp data(remove later and replace with sql data)
-        itemList.add(new Item("Shoes", "Nice running shoes", 500, "Karabo"));
-        itemList.add(new Item("Phone", "Samsung S24",2300, "Oratile"));
+        // Items get updated and recycler view sees the data
+        itemList = ItemStore.items;
 
         // connect data to adapter
         adapter = new ItemAdapter(itemList);
@@ -65,7 +72,56 @@ public class MainActivity extends AppCompatActivity {
                 adapter.filter(newText); // live filtering while typing
                 return false;
             }
+
         });
+        //What?
+        /*postItemBtn.setOnClickListener(v -> {
+
+            Intent intent = new Intent(
+                    MainActivity.this,
+                    PostItemActivity.class
+            );
+
+            startActivity(intent);
+        });*/
+
+        bottomNav.setOnItemSelectedListener(item -> {
+
+            int id = item.getItemId();
+
+            if (id == R.id.nav_home) {
+                // already on home
+                return true;
+            }
+
+            else if (id == R.id.nav_post) {
+                startActivity(new Intent(this, PostItemActivity.class));
+                return true;
+            }
+
+            else if (id == R.id.nav_cart) {
+                startActivity(new Intent(this, CartActivity.class)); //needs a database
+                return true;
+            }
+
+            else if (id == R.id.nav_profile) {
+                startActivity(new Intent(this, ProfileActivity.class));
+                return true;
+            }
+
+            return false;
+        });
+
+
+
+
+    }
+    //Refresh RecyclerView after posting
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        adapter.refreshList();
     }
 }
 

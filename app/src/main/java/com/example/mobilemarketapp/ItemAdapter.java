@@ -1,12 +1,16 @@
 package com.example.mobilemarketapp;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,22 +28,36 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
     // Constructor: receives data from MainActivity
     public ItemAdapter(List<Item> itemList){
         // stores data locally in adapter
-        this.itemList = itemList;
+        this.itemList = new ArrayList<>(itemList);
 
         //copy original data for filtering
-        this.itemListFull = new ArrayList<>(itemList);
+        this.itemListFull = itemList;
+
+    }
+    public void refreshList(){
+
+        itemList.clear();
+
+        itemList.addAll(itemListFull);
+
+        notifyDataSetChanged();
     }
 
     // View Holder: represents one row(card) in RecyclerView
     public static class ViewHolder extends RecyclerView.ViewHolder{
         TextView name;
         TextView price;
+        TextView category;
+        ImageView image;
         public ViewHolder(View view){
             super(view);
 
             //connect Java variables to xml views(item_card.xml
             name = view.findViewById(R.id.itemName);
             price = view.findViewById(R.id.itemPrice);
+            category = view.findViewById(R.id.itemCategory);
+            image = view.findViewById(R.id.itemImage);
+
         }
     }
 
@@ -63,6 +81,13 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         //set data into UI elements
         holder.name.setText(item.name);
         holder.price.setText("R" + item.price);
+        holder.category.setText(item.category);
+
+        //shows first image if available
+        if(item.imageUris != null && !item.imageUris.isEmpty()){
+            Uri uri = Uri.parse(item.imageUris.get(0)); //uses first image as preview image
+            holder.image.setImageURI(uri);
+        }
 
         // Makes items clickable
         holder.itemView.setOnClickListener(v -> {
@@ -75,6 +100,11 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
             intent.putExtra("description", item.description);
             intent.putExtra("price", item.price);
             intent.putExtra("seller", item.sellerName);
+            intent.putExtra("category", item.category);
+            intent.putStringArrayListExtra(
+                    "images",
+                    new ArrayList<>(item.imageUris)
+            );
 
             //start new screen
             v.getContext().startActivity(intent);
