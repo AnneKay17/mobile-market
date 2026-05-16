@@ -1,4 +1,4 @@
-package com.example.mobilemarketapp;
+package com.example.mobilemarketapp.java;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -10,7 +10,23 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.mobilemarketapp.DBHelper;
+import com.example.mobilemarketapp.MainActivity;
+import com.example.mobilemarketapp.R;
+import com.example.mobilemarketapp.RegisterActivity;
 
+/**
+ * LoginActivity — First screen shown when the app launches.
+ *
+ * If the user already has an active session stored in SharedPreferences
+ * they are redirected straight to MainActivity without needing to log in again.
+ *
+ * Validates:
+ *   - Email field not empty
+ *   - Password field not empty
+ *   - Credentials match a user record in the database
+ *     (password is hashed inside DBHelper before the comparison)
+ */
 public class LoginActivity extends AppCompatActivity {
 
     // UI views
@@ -19,7 +35,7 @@ public class LoginActivity extends AppCompatActivity {
     TextView goToRegister;
 
     // Database helper
-    DBHelper dbHelper;
+    com.example.mobilemarketapp.DBHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +53,7 @@ public class LoginActivity extends AppCompatActivity {
 
         // ── Auto-login: skip login screen if session already exists ──────────
         String savedUser = getSharedPreferences("app", MODE_PRIVATE)
-                .getString("user", null);
+            .getString("user", null);
 
         if (savedUser != null) {
             // Session found — go directly to the marketplace
@@ -76,10 +92,10 @@ public class LoginActivity extends AppCompatActivity {
 
                 // Save session to SharedPreferences
                 getSharedPreferences("app", MODE_PRIVATE)
-                        .edit()
-                        .putString("user",  username)
-                        .putString("email", email)
-                        .apply();
+                    .edit()
+                    .putString("user",  username)
+                    .putString("email", email)
+                    .apply();
 
                 goToMain();
 
@@ -91,7 +107,7 @@ public class LoginActivity extends AppCompatActivity {
 
         // Navigate to registration screen
         goToRegister.setOnClickListener(v ->
-                startActivity(new Intent(LoginActivity.this, RegisterActivity.class))
+            startActivity(new Intent(LoginActivity.this, RegisterActivity.class))
         );
     }
 

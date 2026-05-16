@@ -1,4 +1,4 @@
-package com.example.mobilemarketapp;
+package com.example.mobilemarketapp.java;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,7 +11,23 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.mobilemarketapp.DBHelper;
+import com.example.mobilemarketapp.LoginActivity;
+import com.example.mobilemarketapp.MainActivity;
+import com.example.mobilemarketapp.R;
 
+/**
+ * RegisterActivity — New user sign-up screen.
+ *
+ * Validates:
+ *   - Username not empty
+ *   - Email format (using android.util.Patterns)
+ *   - Password at least 6 characters
+ *   - Password and confirm-password fields match
+ *
+ * On success: saves username + email to SharedPreferences (session)
+ * and navigates to MainActivity.
+ */
 public class RegisterActivity extends AppCompatActivity {
 
     // UI fields
@@ -20,7 +36,7 @@ public class RegisterActivity extends AppCompatActivity {
     Button registerBtn;
 
     // Database helper
-    DBHelper dbHelper;
+    com.example.mobilemarketapp.DBHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +56,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         // Navigate to login screen when "Already have an account?" is tapped
         goToLogin.setOnClickListener(v ->
-                startActivity(new Intent(RegisterActivity.this, LoginActivity.class))
+            startActivity(new Intent(RegisterActivity.this, LoginActivity.class))
         );
 
         // Handle register button click
@@ -92,7 +108,7 @@ public class RegisterActivity extends AppCompatActivity {
             if (success) {
                 // Save session so the user doesn't have to log in again immediately
                 SharedPreferences.Editor editor =
-                        getSharedPreferences("app", MODE_PRIVATE).edit();
+                    getSharedPreferences("app", MODE_PRIVATE).edit();
                 editor.putString("user",  username);
                 editor.putString("email", email);
                 editor.apply();

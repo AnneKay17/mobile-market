@@ -1,4 +1,4 @@
-package com.example.mobilemarketapp;
+package com.example.mobilemarketapp.java;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
@@ -11,12 +11,28 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.mobilemarketapp.CartAdapter;
+import com.example.mobilemarketapp.CartStore;
+import com.example.mobilemarketapp.Item;
+import com.example.mobilemarketapp.R;
 
+/**
+ * CartActivity — The shopping basket screen.
+ *
+ * Displays:
+ *   - A list of items the user has added to their basket
+ *   - A running total price
+ *   - A "Checkout" button that simulates placing an order
+ *   - A "Clear Basket" button that removes all items
+ *
+ * CartStore.cartItems is a static list shared across the whole app.
+ * Items are added from ItemDetailsActivity and removed here.
+ */
 public class CartActivity extends AppCompatActivity {
 
     // ── UI views ──────────────────────────────────────────────────────────────
     RecyclerView cartRecycler;
-    CartAdapter  adapter;
+    com.example.mobilemarketapp.CartAdapter adapter;
     TextView     emptyText;
     TextView     totalPriceText;  // shows the running total
     Button       clearCartBtn;
@@ -39,7 +55,7 @@ public class CartActivity extends AppCompatActivity {
 
         // Pass a callback so the adapter can notify us when an item is removed
         // so we can update the total price and empty-state visibility
-        adapter = new CartAdapter(CartStore.cartItems, this::onCartChanged);
+        adapter = new CartAdapter(com.example.mobilemarketapp.CartStore.cartItems, this::onCartChanged);
         cartRecycler.setAdapter(adapter);
 
         // Show the correct UI state on first open
@@ -47,7 +63,7 @@ public class CartActivity extends AppCompatActivity {
 
         // ── Clear basket ──────────────────────────────────────────────────────
         clearCartBtn.setOnClickListener(v -> {
-            CartStore.cartItems.clear();
+            com.example.mobilemarketapp.CartStore.cartItems.clear();
             adapter.notifyDataSetChanged();
             onCartChanged();
             Toast.makeText(this, "Basket cleared!", Toast.LENGTH_SHORT).show();
@@ -55,7 +71,7 @@ public class CartActivity extends AppCompatActivity {
 
         // ── Checkout ──────────────────────────────────────────────────────────
         checkoutBtn.setOnClickListener(v -> {
-            if (CartStore.cartItems.isEmpty()) {
+            if (com.example.mobilemarketapp.CartStore.cartItems.isEmpty()) {
                 Toast.makeText(this, "Your basket is empty!", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -63,24 +79,27 @@ public class CartActivity extends AppCompatActivity {
             // Show a confirmation dialog before "placing" the order
             double total = calculateTotal();
             new AlertDialog.Builder(this)
-                    .setTitle("Confirm Order")
-                    .setMessage("Place order for " + CartStore.cartItems.size() +
+                .setTitle("Confirm Order")
+                .setMessage("Place order for " + com.example.mobilemarketapp.CartStore.cartItems.size() +
                             " item(s)?\n\nTotal: R " + String.format("%.2f", total))
-                    .setPositiveButton("Place Order", (dialog, which) -> {
-                        // Clear the basket after checkout
-                        CartStore.cartItems.clear();
-                        adapter.notifyDataSetChanged();
-                        onCartChanged();
-                        Toast.makeText(this, "Order placed! Thank you 🎉", Toast.LENGTH_LONG).show();
-                    })
-                    .setNegativeButton("Cancel", null)
-                    .show();
+                .setPositiveButton("Place Order", (dialog, which) -> {
+                    // Clear the basket after checkout
+                    com.example.mobilemarketapp.CartStore.cartItems.clear();
+                    adapter.notifyDataSetChanged();
+                    onCartChanged();
+                    Toast.makeText(this, "Order placed! Thank you 🎉", Toast.LENGTH_LONG).show();
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
         });
     }
 
-
+    /**
+     * Called whenever an item is added or removed from the cart.
+     * Updates the total price, the empty-state text, and button visibility.
+     */
     public void onCartChanged() {
-        boolean empty = CartStore.cartItems.isEmpty();
+        boolean empty = com.example.mobilemarketapp.CartStore.cartItems.isEmpty();
 
         // Toggle between the item list and "empty" message
         emptyText.setVisibility(empty ? View.VISIBLE : View.GONE);
@@ -100,6 +119,11 @@ public class CartActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Sums the price of every item currently in the basket.
+     *
+     * @return Total price as a double.
+     */
     private double calculateTotal() {
         double total = 0.0;
         for (Item item : CartStore.cartItems) {

@@ -3,140 +3,200 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#F5F5F5">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp">
 
-        <!-- Swipeable Image Gallery -->
+        <!-- IMAGE -->
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewPager"
             android:layout_width="0dp"
             android:layout_height="280dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent" />
 
-        <!-- shows dots under image-->
+        <!-- DOTS -->
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabDots"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            app:tabIndicatorHeight="0dp"
-            app:tabSelectedTextColor="@android:color/black"
-            app:tabTextColor="#CCCCCC"
             app:layout_constraintTop_toBottomOf="@id/viewPager"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent" />
 
-        <!-- Item Name -->
+        <!-- ITEM NAME -->
         <TextView
             android:id="@+id/detailName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="Gaming Laptop"
+            android:textColor="#000000"
             android:textSize="24sp"
             android:textStyle="bold"
             android:layout_marginTop="16dp"
-            app:layout_constraintTop_toBottomOf="@id/viewPager"
+            app:layout_constraintTop_toBottomOf="@id/tabDots"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent" />
 
-        <!-- Category -->
+        <!-- CATEGORY -->
         <TextView
             android:id="@+id/detailCategory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Electronics"
-            android:textSize="14sp"
             android:textColor="#666666"
+            android:textSize="14sp"
             android:layout_marginTop="6dp"
             app:layout_constraintTop_toBottomOf="@id/detailName"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent" />
 
-        <!-- Price -->
+        <!-- PRICE -->
         <TextView
             android:id="@+id/detailPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="R 12 000"
+            android:textColor="#2E7D32"
             android:textSize="28sp"
             android:textStyle="bold"
-            android:textColor="#009688"
             android:layout_marginTop="12dp"
             app:layout_constraintTop_toBottomOf="@id/detailCategory"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent" />
 
-        <!-- Seller -->
+        <!-- SELLER -->
         <TextView
             android:id="@+id/detailSeller"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Seller: Karabo"
+            android:text="Seller: Alex"
+            android:textColor="#000000"
             android:textSize="16sp"
             android:layout_marginTop="10dp"
             app:layout_constraintTop_toBottomOf="@id/detailPrice"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent" />
 
-        <!-- Description Title -->
+        <!-- DESCRIPTION TITLE -->
         <TextView
             android:id="@+id/descriptionLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Description"
+            android:textColor="#000000"
             android:textStyle="bold"
             android:textSize="18sp"
             android:layout_marginTop="20dp"
             app:layout_constraintTop_toBottomOf="@id/detailSeller"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent" />
 
-        <!-- Description -->
+        <!-- DESCRIPTION -->
         <TextView
             android:id="@+id/detailDescription"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="Description goes here..."
+            android:textColor="#333333"
             android:textSize="16sp"
-            android:lineSpacingExtra="4dp"
             android:layout_marginTop="8dp"
             app:layout_constraintTop_toBottomOf="@id/descriptionLabel"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent" />
 
-        <!-- Rating -->
+        <!-- RATING -->
         <TextView
             android:id="@+id/detailRating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Average Rating: 4.5"
+            android:textColor="#000000"
             android:textSize="18sp"
             android:textStyle="bold"
             android:layout_marginTop="20dp"
             app:layout_constraintTop_toBottomOf="@id/detailDescription"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent" />
 
-        <!-- Rate Button -->
+        <!-- COMMENTS -->
+        <TextView
+            android:id="@+id/commentsTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Comments"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintTop_toBottomOf="@id/detailRating"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <!-- COMMENT INPUT -->
+        <EditText
+            android:id="@+id/commentInput"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:hint="Write a comment..."
+            android:textColor="#000000"
+            android:textColorHint="#777777"
+            android:backgroundTint="#009688"
+            android:layout_marginTop="10dp"
+            app:layout_constraintTop_toBottomOf="@id/commentsTitle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- COMMENT BUTTON -->
+        <Button
+            android:id="@+id/commentBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Post Comment"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#009688"
+            android:layout_marginTop="10dp"
+            app:layout_constraintTop_toBottomOf="@id/commentInput"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <!-- COMMENT LIST -->
+        <ListView
+            android:id="@+id/commentList"
+            android:layout_width="0dp"
+            android:layout_height="180dp"
+            android:background="#FFFFFF"
+            android:divider="#CCCCCC"
+            android:dividerHeight="1dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintTop_toBottomOf="@id/commentBtn"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- RATE BUTTON -->
         <Button
             android:id="@+id/rateButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Rate Item"
-            android:layout_marginTop="16dp"
-            app:layout_constraintTop_toBottomOf="@id/detailRating"
-            app:layout_constraintStart_toStartOf="parent"/>
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#FF9800"
+            android:layout_marginTop="20dp"
+            app:layout_constraintTop_toBottomOf="@id/commentList"
+            app:layout_constraintStart_toStartOf="parent" />
 
+        <!-- ADD TO CART -->
         <Button
             android:id="@+id/addToCartBtn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="Add To Basket"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#2E7D32"
+            android:layout_marginTop="16dp"
             app:layout_constraintTop_toBottomOf="@id/rateButton"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="20dp"/>
+            app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

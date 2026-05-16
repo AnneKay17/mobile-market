@@ -1,4 +1,4 @@
-package com.example.mobilemarketapp;
+package com.example.mobilemarketapp.java;
 
 import java.util.List;
 

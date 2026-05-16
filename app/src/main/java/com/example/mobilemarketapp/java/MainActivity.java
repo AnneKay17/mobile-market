@@ -1,4 +1,4 @@
-package com.example.mobilemarketapp;
+package com.example.mobilemarketapp.java;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,11 +8,27 @@ import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.mobilemarketapp.CartActivity;
+import com.example.mobilemarketapp.DBHelper;
+import com.example.mobilemarketapp.Item;
+import com.example.mobilemarketapp.ItemAdapter;
+import com.example.mobilemarketapp.PostItemActivity;
+import com.example.mobilemarketapp.ProfileActivity;
+import com.example.mobilemarketapp.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.List;
 
-
+/**
+ * MainActivity — The main marketplace screen.
+ *
+ * Shows all posted items in a RecyclerView (newest first).
+ * Includes a live search bar that filters items by name.
+ * Bottom navigation links to: Home | Post Item | Basket | Profile
+ *
+ * onResume() refreshes the list so newly posted items appear immediately
+ * when the user navigates back from PostItemActivity.
+ */
 public class MainActivity extends AppCompatActivity {
 
     // ── UI components ──────────────────────────────────────────────────────────
@@ -21,9 +37,9 @@ public class MainActivity extends AppCompatActivity {
     BottomNavigationView   bottomNav;
 
     // ── Data layer ─────────────────────────────────────────────────────────────
-    ItemAdapter    adapter;
+    com.example.mobilemarketapp.ItemAdapter adapter;
     List<Item>     itemList;
-    DBHelper       dbHelper; // single shared instance — passed into the adapter
+    com.example.mobilemarketapp.DBHelper dbHelper; // single shared instance — passed into the adapter
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,7 +109,11 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-
+    /**
+     * Called every time this activity becomes visible again.
+     * Refreshes the item list so newly posted items show up immediately
+     * after returning from PostItemActivity.
+     */
     @Override
     protected void onResume() {
         super.onResume();
@@ -102,4 +122,3 @@ public class MainActivity extends AppCompatActivity {
         adapter.updateList(itemList);
     }
 }
-

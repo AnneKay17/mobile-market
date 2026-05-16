@@ -1,4 +1,4 @@
-package com.example.mobilemarketapp;
+package com.example.mobilemarketapp.java;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -15,10 +15,30 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.mobilemarketapp.DBHelper;
+import com.example.mobilemarketapp.ImagePreviewAdapter;
+import com.example.mobilemarketapp.R;
+
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * PostItemActivity — Screen for listing a new item for sale.
+ *
+ * The seller can:
+ *   - Pick multiple images from the device gallery
+ *   - Enter item name, description, price
+ *   - Choose a category from a dropdown spinner
+ *
+ * On submit, the item is saved to the SQLite database via DBHelper.insertItem().
+ * The seller name is read from SharedPreferences (set during login/register).
+ *
+ * Validation checks:
+ *   - Name must not be empty
+ *   - Description must not be empty
+ *   - Price must be a valid number
+ *   - A category must be selected (not the placeholder)
+ */
 public class PostItemActivity extends AppCompatActivity {
 
     // ── Input views ───────────────────────────────────────────────────────────
@@ -30,10 +50,10 @@ public class PostItemActivity extends AppCompatActivity {
     ActivityResultLauncher<String> imagePicker; // system gallery picker
     List<String>       selectedImages = new ArrayList<>(); // URIs of chosen images
     RecyclerView       previewRecycler;
-    ImagePreviewAdapter previewAdapter;
+    com.example.mobilemarketapp.ImagePreviewAdapter previewAdapter;
 
     // Database helper
-    DBHelper dbHelper;
+    com.example.mobilemarketapp.DBHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,47 +74,47 @@ public class PostItemActivity extends AppCompatActivity {
 
         // ── Image preview RecyclerView (horizontal scroll) ────────────────────
         previewRecycler.setLayoutManager(
-                new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+            new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         );
         previewAdapter = new ImagePreviewAdapter(selectedImages);
         previewRecycler.setAdapter(previewAdapter);
 
         // ── Category spinner ──────────────────────────────────────────────────
         String[] categories = {
-                "Select Category", // placeholder — user must pick a real one
-                "Electronics",
-                "Clothing",
-                "Books",
-                "Furniture",
-                "Food",
-                "Other"
+            "Select Category", // placeholder — user must pick a real one
+            "Electronics",
+            "Clothing",
+            "Books",
+            "Furniture",
+            "Food",
+            "Other"
         };
         categorySpinner.setAdapter(new ArrayAdapter<>(
-                this,
-                android.R.layout.simple_spinner_dropdown_item,
-                categories
+            this,
+            android.R.layout.simple_spinner_dropdown_item,
+            categories
         ));
 
         // ── Read logged-in seller name from session ────────────────────────────
         String sellerName = getSharedPreferences("app", MODE_PRIVATE)
-                .getString("user", "Unknown");
+            .getString("user", "Unknown");
 
         // ── Image picker — opens device gallery, allows multiple selections ────
         imagePicker = registerForActivityResult(
-                new ActivityResultContracts.GetMultipleContents(),
-                uris -> {
-                    if (uris == null || uris.isEmpty()) return;
-                    selectedImages.clear();
-                    for (Uri uri : uris) {
-                        // Take a persistent URI permission so the app can read the
-                        // image even after the session ends
-                        getContentResolver().takePersistableUriPermission(
-                                uri, Intent.FLAG_GRANT_READ_URI_PERMISSION
-                        );
-                        selectedImages.add(uri.toString());
-                    }
-                    previewAdapter.notifyDataSetChanged(); // refresh the thumbnail strip
+            new ActivityResultContracts.GetMultipleContents(),
+            uris -> {
+                if (uris == null || uris.isEmpty()) return;
+                selectedImages.clear();
+                for (Uri uri : uris) {
+                    // Take a persistent URI permission so the app can read the
+                    // image even after the session ends
+                    getContentResolver().takePersistableUriPermission(
+                        uri, Intent.FLAG_GRANT_READ_URI_PERMISSION
+                    );
+                    selectedImages.add(uri.toString());
                 }
+                previewAdapter.notifyDataSetChanged(); // refresh the thumbnail strip
+            }
         );
 
         // Open gallery when "Add Images" is tapped

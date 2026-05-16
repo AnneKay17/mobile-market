@@ -5,30 +5,37 @@ import java.util.List;
 
 public class ItemStore {
 
-    //SHARED LIST FOR WHOLE APP
-    public static List <Item> items = new ArrayList<>();
+    // SHARED LIST FOR WHOLE APP
+    public static List<Item> items = new ArrayList<>();
+
     static {
 
-        // fake starter items
+        // Fake starter items
         items.add(new Item(
                 "Shoes",
                 "Running shoes",
-                500,
+                500.0,
                 "Admin",
-                "2026",
                 "Fashion",
-                new ArrayList<>()
+                new ArrayList<String>()
+        ));
+
+        items.add(new Item(
+                "Gaming Laptop",
+                "Good condition laptop",
+                12000.0,
+                "Alex",
+                "Electronics",
+                new ArrayList<String>()
         ));
 
         items.add(new Item(
                 "Phone",
                 "Samsung phone",
-                3000,
+                3000.0,
                 "Admin",
-                "2026",
                 "Electronics",
-                new ArrayList<>()
+                new ArrayList<String>()
         ));
     }
-
 }

@@ -1,4 +1,4 @@
-package com.example.mobilemarketapp;
+package com.example.mobilemarketapp.java;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -10,24 +10,49 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.mobilemarketapp.DBHelper;
+import com.example.mobilemarketapp.Item;
+import com.example.mobilemarketapp.ItemDetailsActivity;
+import com.example.mobilemarketapp.R;
+
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * ItemAdapter — RecyclerView adapter that displays marketplace listings.
+ *
+ * Each card shows:
+ *   - Thumbnail (first image URI if available)
+ *   - Item name
+ *   - Category badge
+ *   - Average star rating (fetched from the shared DBHelper)
+ *   - Price in Rands
+ *
+ * Tapping a card opens ItemDetailsActivity with all item data passed as extras.
+ *
+ * The adapter keeps two lists:
+ *   - itemList     : the currently displayed/filtered list
+ *   - itemListFull : the complete unfiltered list (for restoring after search)
+ */
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
 
     // Currently displayed items (may be a filtered subset of itemListFull)
-    List<Item> itemList;
+    List<com.example.mobilemarketapp.Item> itemList;
 
     // Full unfiltered list — used to restore results when the search query is cleared
-    List<Item> itemListFull;
+    List<com.example.mobilemarketapp.Item> itemListFull;
 
     // Shared database helper — passed in from the Activity to avoid creating
     // a new connection on every single row bind (which was the previous bug)
-    DBHelper dbHelper;
+    com.example.mobilemarketapp.DBHelper dbHelper;
 
-
-    public ItemAdapter(List<Item> itemList, DBHelper dbHelper) {
+    /**
+     * Constructor — receives both the item data and a shared database connection.
+     *
+     * @param itemList The initial list of items to display.
+     * @param dbHelper A DBHelper instance shared from the hosting Activity.
+     */
+    public ItemAdapter(List<com.example.mobilemarketapp.Item> itemList, DBHelper dbHelper) {
         this.itemList     = new ArrayList<>(itemList);
         this.itemListFull = new ArrayList<>(itemList);
         this.dbHelper     = dbHelper;
@@ -53,13 +78,13 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // Inflate the item_card layout for each row
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_card, parent, false);
+            .inflate(R.layout.item_card, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Item item = itemList.get(position);
+        com.example.mobilemarketapp.Item item = itemList.get(position);
 
         // ── Bind data to the card views ───────────────────────────────────────
         holder.nameText.setText(item.name);
@@ -92,8 +117,8 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
             intent.putExtra("seller",      item.sellerName);
             intent.putExtra("category",    item.category);
             intent.putStringArrayListExtra(
-                    "images",
-                    new ArrayList<>(item.imageUris != null ? item.imageUris : new ArrayList<>())
+                "images",
+                new ArrayList<>(item.imageUris != null ? item.imageUris : new ArrayList<>())
             );
             v.getContext().startActivity(intent);
         });
@@ -104,8 +129,15 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         return itemList.size();
     }
 
+    // ── List management methods ───────────────────────────────────────────────
 
-    public void updateList(List<Item> newList) {
+    /**
+     * Replaces both lists with fresh data from the database.
+     * Called from MainActivity.onResume() after posting a new item.
+     *
+     * @param newList Updated item list.
+     */
+    public void updateList(List<com.example.mobilemarketapp.Item> newList) {
         itemListFull.clear();
         itemListFull.addAll(newList);
         itemList.clear();
@@ -113,7 +145,12 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
         notifyDataSetChanged();
     }
 
-
+    /**
+     * Filters the displayed list to items whose name contains the query.
+     * If the query is empty, all items are shown again.
+     *
+     * @param query Text typed in the SearchView.
+     */
     public void filter(String query) {
         itemList.clear();
         if (query.isEmpty()) {

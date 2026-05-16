@@ -1,4 +1,4 @@
-package com.example.mobilemarketapp;
+package com.example.mobilemarketapp.java;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
@@ -14,16 +14,33 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.example.mobilemarketapp.CartStore;
+import com.example.mobilemarketapp.DBHelper;
+import com.example.mobilemarketapp.ImagePagerAdapter;
+import com.example.mobilemarketapp.Item;
+import com.example.mobilemarketapp.R;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 import java.util.ArrayList;
 
-
+/**
+ * ItemDetailsActivity — Full product detail screen.
+ *
+ * Displays:
+ *   - Swipeable image gallery (ViewPager2 + dot indicators)
+ *   - Item name, category, price, seller name
+ *   - Average star rating (loaded from database)
+ *   - Comments section (stored in-memory for this session)
+ *   - Rate Item button (enforces one-rating-per-user via DBHelper)
+ *   - Add To Basket button
+ *
+ * Data arrives via Intent extras put by ItemAdapter when the user taps a card.
+ */
 public class ItemDetailsActivity extends AppCompatActivity {
 
     // Database helper — used for ratings
-    DBHelper dbHelper;
+    com.example.mobilemarketapp.DBHelper dbHelper;
 
     // Rating display (updated after a new rating is submitted)
     TextView ratingText;
@@ -69,7 +86,7 @@ public class ItemDetailsActivity extends AppCompatActivity {
 
         // Get the currently logged-in username (used for rating ownership checks)
         String loggedInUser = getSharedPreferences("app", MODE_PRIVATE)
-                .getString("user", "Unknown");
+            .getString("user", "Unknown");
 
         // ── Populate text fields ──────────────────────────────────────────────
         nameText.setText(itemName);
@@ -84,7 +101,7 @@ public class ItemDetailsActivity extends AppCompatActivity {
         // ── Image gallery setup ───────────────────────────────────────────────
         if (imageUris != null && !imageUris.isEmpty()) {
             // Show swipeable image carousel with dot page indicators
-            ImagePagerAdapter pagerAdapter = new ImagePagerAdapter(imageUris);
+            com.example.mobilemarketapp.ImagePagerAdapter pagerAdapter = new ImagePagerAdapter(imageUris);
             viewPager.setAdapter(pagerAdapter);
 
             // Attach dot indicators to the ViewPager
@@ -119,13 +136,13 @@ public class ItemDetailsActivity extends AppCompatActivity {
         // ── Add to basket button ──────────────────────────────────────────────
         addCartBtn.setOnClickListener(v -> {
             // Create an Item object and add it to the shared static cart list
-            Item cartItem = new Item(
-                    itemName,
-                    itemDesc,
-                    itemPrice,
-                    itemSeller,
-                    itemCategory,
-                    imageUris != null ? imageUris : new ArrayList<>()
+            com.example.mobilemarketapp.Item cartItem = new Item(
+                itemName,
+                itemDesc,
+                itemPrice,
+                itemSeller,
+                itemCategory,
+                imageUris != null ? imageUris : new ArrayList<>()
             );
             CartStore.cartItems.add(cartItem);
             Toast.makeText(this, itemName + " added to basket!", Toast.LENGTH_SHORT).show();
@@ -173,7 +190,12 @@ public class ItemDetailsActivity extends AppCompatActivity {
         });
     }
 
-
+    /**
+     * Reads the average rating for the given item from the database
+     * and updates the ratingText TextView.
+     *
+     * @param itemId The item whose rating is displayed.
+     */
     private void refreshRating(int itemId) {
         if (itemId == -1) {
             ratingText.setText("Average Rating: No ratings yet");
